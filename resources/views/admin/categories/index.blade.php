@@ -17,13 +17,13 @@
        
         
     <div class="tile">
-      @if (Session::has('message'))
+      @if (Session::has('success'))
       <div class="alert alert-success" role="alert">
-       {{Session::get('message')}}
+       {{Session::get('success')}}
        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      </div> 
+      </div>
       @endif
       <div class="tile-body">
         <div  class="col-md-12 p-2 m-2 row ">
@@ -32,7 +32,7 @@
           </div>
           <div class="row col-md-6 justify-content-end">
               <a style="height: 30px; width:100px;" href="#" class="btn btn-warning d-flex justify-content-center align-items-center ml-1"><i class="fa fa-print "></i><small>PDF</small></a>
-              <a style="height: 30px; width:100px;" href="#" class="btn btn-primary d-flex justify-content-center align-items-center ml-1"><i class="fa fa-refresh "></i><small>Refresh</small></a>
+              <a style="height: 30px; width:100px;" href="{{route('categories.create')}}" class="btn btn-primary d-flex justify-content-center align-items-center ml-1"><i class="fa fa-plus "></i><small>New</small></a>
           </div>
           
           
@@ -58,6 +58,12 @@
                 <td>{{$category->name}}</td> 
                 <td>{{$category->slug}}</td> 
                 <td>{{$category->description}}</td> 
+                <td>
+                  <div class="row justify-content-center">
+                    <a style="height: 30px; width:100px;" href="{{route('categories.edit',$category->id)}}" class="btn btn-warning d-flex justify-content-center align-items-center ml-1"><i class="fa fa-edit "></i><small>edit</small></a>
+                    <a style="height: 30px; width:100px;" href="#" class="btn btn-danger d-flex justify-content-center align-items-center ml-1"><i class="fa fa-delete "></i><small>delete</small></a>
+                </div>
+                </td>
             <tr> 
               @endforeach
               

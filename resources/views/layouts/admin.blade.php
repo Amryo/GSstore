@@ -102,8 +102,8 @@
             <li><a class="treeview-item" href="widgets.html"><i class="icon fa fa-circle-o"></i> Widgets</a></li>
           </ul>
         </li>
-        <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Categories</span></a></li>
-        <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Products</span></a></li>
+        <li><a class="app-menu__item" href="{{route('categories.index')}}"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Categories</span></a></li>
+        <li><a class="app-menu__item" href="{{route('products.index')}}"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Products</span></a></li>
         <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Orders</span></a></li>
         <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Customer</span></a></li>
         <li><a class="app-menu__item" href="charts.html"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">Cart</span></a></li>
@@ -141,14 +141,14 @@
       @yield('content') 
     </main>
     <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
     <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
+    <script src="{{asset('js/plugins/pace.min.js')}}"></script>
     <!-- Page specific javascripts-->
-    <script type="text/javascript" src="js/plugins/chart.js"></script>
+    <script type="text/javascript" src="{{asset('js/plugins/chart.js')}}"></script>
     <script type="text/javascript">
       var data = {
       	labels: ["January", "February", "March", "April", "May"],

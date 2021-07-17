@@ -17,10 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-
+require __DIR__ . '/auth.php';
 // Testing Code 
-Route::view('/' , 'admin.index');
+Route::view('/', 'admin.index');
 Route::get('/w', [WelcomeController::class, 'index']);
 
 Route::get('/user', [WelcomeController::class, 'user']);
@@ -30,8 +33,9 @@ Route::get('/user/{name}', [WelcomeController::class, 'show']);
 Route::any('any', 'WelcomeController@index');
 
 Route::prefix('admin')->group(function () {
-  Route::resource('categories', CategoriesController::class);
-  Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoriesController::class);
+    Route::resource('products', ProductController::class);
+    // Route::resource('user', [UserController::class]);
 
 });
 
