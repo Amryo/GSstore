@@ -8,10 +8,20 @@ use App\Models\Category;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+
+use RealRashid\SweetAlert\Facades\Alert;
+use Student;
 
 class CategoriesController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +29,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+
+        Gate::authorize('categories.view-any');
         $categories = Category::orderBy('created_at', 'ASC')
             ->orderBy('name', 'DESC')
             ->latest()
@@ -35,6 +47,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
+        Gate::authorize('categories.create');
+
         $categories = Category::where('status', '=', 'Active')->get();
         $category = new Category();
         return view('admin.categories.create', ['categories' => $categories, 'category' => $category]);
@@ -48,16 +62,27 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('categories.create');
 
         $request->validate(Category::validateRule());
+
         //requset Merge ^_^ 
         $request->merge([
             'slug' => Str::slug($request->get('name'))
         ]);
-        $categories = Category::create($request->all());
+        $input = $request->all();
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('uploads', 'public');
+            $input['image'] = $image_path;
+        }
+        $categories = Category::create($input);
         //  Write into session 
-        $success = $request->session()->flash('success', $request->name . 'add successfully');
+        //$success = $request->session()->flash('success', $request->name . 'add successfully');
+        Alert::success('Success Title', 'Success Message');
+
         return redirect()->route('categories.index', ['categories' => $categories]);
+
+
 
         /* if($request->hasFile('image'))
         {
@@ -112,6 +137,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('categories.update');
+
         $category = Category::findorfail($id);
         $categories = Category::where('status', '=', 'Active')->get();
 
@@ -127,15 +154,24 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Gate::authorize('categories.update');
+
         $request->validate(Category::validateRule($id));
         $category = Category::find($id);
+
         #Method 4 : Mass assignment
         $request->merge([
             'slug' => Str::slug($request->get('name')) . '-2',
         ]);
 
-        $category->update($request->all());
-        $success = $request->session()->flash('success', $request->name . ' ' . 'Update successfully');
+        $input = $request->all();
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('uploads', 'public');
+            $input['image'] = $image_path;
+        }
+        $category->update($input);
+
+        //$success = $request->session()->flash('success', $request->name . ' ' . 'Update successfully');
         // 
         #Method 2 : Mass assignment
 
@@ -156,5 +192,17 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        $category = Category::findorFail($id);
+        $category->delete();
+        return redirect()->back();
+    }
+
+    public function DeleteAllSelectedCategory(Request $request)
+    {
+
+        $delete_all_id = explode(",", $request->delete_all_id);
+        Category::whereIn('id', $delete_all_id)->Delete();
+        Alert::success('Success Title', 'Success Message');
+        return redirect()->back();
     }
 }

@@ -14,7 +14,12 @@ class CreateCartsTable extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('cookie_id');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->unsignedSmallInteger('quantity')->default(0);
+            $table->unique(['cookie_id', 'product_id', 'user_id']);
             $table->timestamps();
         });
     }

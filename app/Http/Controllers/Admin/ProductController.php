@@ -6,10 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    /* For make middleware for any Page  */
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +24,11 @@ class ProductController extends Controller
     public function index()
     {
         //where('status', '=', 'active')->orderBy('name', 'ASC')->orderBy('price', 'DESC')->get();
-        $products = Product::paginate();
-        return view('admin.products.index', ['products' => $products]);
+        Gate::authorize('products.view-any');
+        $products = Product::active()->paginate();
+        $count = Product::count();
+
+        return view('admin.products.index', ['products' => $products, 'count' => $count]);
     }
 
     /**
@@ -29,6 +38,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+
+        Gate::authorize('products.create');
         $product = new Product();
         $categories = Category::all();
         return view('admin.products.create', ['product' => $product, 'categories' => $categories]);
@@ -42,30 +53,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->merge([
             'slug' => Str::slug($request->get('name'))
         ]);
+
+        $input = $request->all();
         if ($request->hasFile('image')) {
-            $file = $request->file('image'); //Upload file
-            $image_path = $file->store('uploads', 'public');
-            $request->merge([
-                'image' => $image_path,
-            ]);
-
-
-
-            // $file->getClientOriginalName(); //return file name ;
-            // $file->getClientOriginalExtension(); //return 
-            // $file->getClientMimeType(); //EX :image/jpg ;
-            // $file->getType();
-            // $file->getSize();
-
-
-
+            $image_path = $request->file('image')->store('uploads', 'public');
+            $input['image'] = $image_path;
         }
-        $products = Product::create($request->all());
-
-        $success = $request->session()->flash('success', 'Product ' . '(' . $request->name . ')' . ' Add successfully');
+        $products = Product::create($input);
+        $success = request()->session()->flash('success', 'Product ' . '(' . $request['name'] . ')' . ' Add successfully');
         return redirect()->route('products.index');
     }
 
@@ -88,6 +87,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('products.update');
         $product = Product::find($id);
         $categories = Category::all();
         return view('admin.products.edit', ['product' => $product, 'categories' => $categories]);
@@ -102,15 +102,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Gate::authorize('products.update');
         $products = Product::find($id);
+        $input = $request->all();
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('uploads', 'public');
-            $request->merge([
-                'image' => $image_path,
-            ]);
+            $input['image'] = $image_path;
         }
-        $products->update($request->all());
-        $success = $request->session()->flash('success', 'Product ' . '(' . $request->name . ')' . ' Update successfully');
+        $products->update($input);
+        $success = request()->session()->flash('success', 'Product ' . '(' . $request['name'] . ')' . ' Update successfully');
         return redirect()->route('products.index');
     }
 
@@ -122,6 +122,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Gate::authorize('products.delete');
+        $product = Product::findorfail($id);
+        $product->delete();
+        $success = session()->flash('success', $product->name . ' Deleted successfully');
+        return redirect()->back();
     }
 }

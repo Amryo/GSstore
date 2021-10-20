@@ -34,7 +34,7 @@
         </div>
 
       </div>
-      <form method="POST" action="{{route('categories.update',$category->id)}}">
+      <form method="POST" action="{{route('categories.update',$category->id)}}" enctype="multipart/form-data">
           @csrf
           @method('put')
         @include('admin.categories._form' , ['button'=> 'Update'])

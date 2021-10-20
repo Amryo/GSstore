@@ -5,7 +5,7 @@
   <div class="app-title">
     <div>
       <h1><i class="fa fa-th-list"></i>Products Table</h1>
-      <p>Products This Store</p>
+      <p><x-message type="info" :count="$count"/> </p>
     </div>
     <ul class="app-breadcrumb breadcrumb side">
       <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -17,14 +17,8 @@
        
         
     <div class="tile">
-      @if (Session::has('success'))
-      <div class="alert alert-success" role="alert">
-       {{Session::get('success')}}
-       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      </div> 
-      @endif
+     
+      <x-alert />
       <div class="tile-body">
         <div  class="col-md-12 p-2 m-2 row ">
           <div class="col-md-6 justify-content-start align-items-center">
@@ -49,7 +43,7 @@
                     <th>Slug</th>
                     <th>Category</th>
                     <th>Description</th>
-                    <!--th>image</th> -->
+                    <th>image</th>
                     <th>price</th>
                     <th>sale price</th>
                     <th>quantity</th>
@@ -65,13 +59,13 @@
              
                 @foreach ($products as $product)
                 <tr>
-                    <td>{{$product->id}}</td> 
+                    <td>{{$product->id ?? ''}}</td> 
                     <td>{{$product->name}}</td>
                     <td>{{$product->slug}}</td> 
-                    <td>{{$product->category->name}}</td> 
+                    <td>{{$product->category->name ?? ''}}</td> 
                     <td>{{$product->description}}</td>
                     <td>
-                        <img style="height: 100px ; wedth:100px" src="{{$product->image}}" >
+                        <img style="height: 100px ; wedth:100px" src="{{asset('storage/'.$product->image)}}" >
                     </td>
                     <td>{{$product->price}} $</td>
                     <td>{{$product->sale_price}}</td>
@@ -84,7 +78,11 @@
                     <td>
                       <div class="row  align-items-center">
                         <a style="height: 30px; width:100px;" href="{{route('products.edit',$product->id)}}" class="btn btn-warning d-flex justify-content-center align-items-center ml-1"><i class="fa fa-edit "></i><small>Edit</small></a>
-                        <a style="height: 30px; width:100px;" href="{{route('products.create')}}" class="btn btn-danger d-flex justify-content-center align-items-center ml-1"><i class="fa fa-remove "></i><small>Delete</small></a>
+                        <form action="{{route('products.destroy',$product->id)}}" method="POST">
+                          @csrf
+                          @method('DELETE')
+                        <button type="submit" style="height: 30px; width:100px;"  class="btn btn-danger d-flex justify-content-center align-items-center ml-1"><i class="fa fa-remove "></i><small>Delete</small></button>
+                        </form>
                       </div>
                     </td>
                 <tr> 

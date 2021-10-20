@@ -12,8 +12,14 @@ class Product extends Model
     protected $fillable = ['name', 'slug', 'description', 'image', 'category_id', 'price', 'sale_price', 'quantity', 'weight', 'height', 'wedth', 'length ', 'sku', 'status'];
 
     protected $perPage = 5;
+    
     function Category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'Active');
     }
 }

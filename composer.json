@@ -12,8 +12,16 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel-notification-channels/fcm": "~2.0",
+        "laravel/fortify": "^1.8",
         "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5"
+        "laravel/nexmo-notification-channel": "^2.5",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5",
+        "nexmo/laravel": "^2.4",
+        "pusher/pusher-php-server": "^7.0",
+        "realrashid/sweet-alert": "^4.0",
+        "uxweb/sweet-alert": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

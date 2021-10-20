@@ -15,7 +15,7 @@
     <div class="form-group">
       <label for="exampleFormControlSelect1">Parent</label>
       <select name="parent_id" class="form-control" id="parent_id">
-        <option>--Select Parent--</option>
+        <option value="0">--Select Parent--</option>
         @foreach ($categories as $parent)
         <option value="{{$parent->id}}" @if ($parent->id == $category->parent_id) selected @endif>{{$parent ->name}}</option>
         @endforeach
@@ -27,7 +27,7 @@
     </div>
     <div class="form-group">
         <label for="image">Image</label>
-        <input type="file" name="image" class="form-control" id="image"   value="{{$category->image}}">
+        <input type="file" name="image" class="form-control" id="image" >
     </div>
 
     <div class="form-check">

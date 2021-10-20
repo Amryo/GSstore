@@ -8,10 +8,9 @@
        </ul>
      </div>
    @endif
-   <div class="form-group">
-      <label for="exampleFormControlInput1">Name *</label>
-      <input type="text" name="name" class="form-control" id="exampleFormControlInput1"  value="{{$product->name}}" placeholder="Ex : HP , Samsung , iPhone Product">
-    </div>
+
+   <x-form-input name="name" type="text" label="Name" :value="$product->name" />
+   
     <div class="form-group">
       <label for="exampleFormControlSelect1">Parent</label>
       <select name="category_id" class="form-control" id="exampleFormControlSelect1">
@@ -21,49 +20,28 @@
         @endforeach
       </select>
     </div>
+
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Description *</label>
       <textarea name="description" class="form-control" id="description" placeholder="Ex : info for product"  rows="3">{{$product->description}}</textarea>
     </div>
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Price *</label>
-      <input type="text" name="price" class="form-control" id="exampleFormControlInput1"  value="{{$product->price}}" placeholder="Ex : 500 $">
-    </div>
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Price Sale *</label>
-      <input type="text" name="sale_price" class="form-control" id="exampleFormControlInput1"  value="{{$product->sale_price}}" placeholder="Ex : 550 $">
-    </div>
+    <x-form-input   name="price" type="number" label="Price" :value="$product->price" />
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Weight</label>
-      <input type="text" name="weight" class="form-control" id="exampleFormControlInput1"  value="{{$product->weight}}" placeholder="Ex : 55 kg">
-    </div>
+    <x-form-input   name="sale_price" type="number" label="Sale Price" :value="$product->sale_price" />
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Height</label>
-      <input type="text" name="height" class="form-control" id="exampleFormControlInput1"  value="{{$product->height}}" placeholder="Ex : 120cm">
-    </div>
+    <x-form-input   name="weight"  type="number"   label="Weight"  :value="$product->weight" />
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Wedth</label>
-      <input type="text" name="weight" class="form-control" id="exampleFormControlInput1"  value="{{$product->wedth}}" placeholder="Ex: 120cm">
-    </div>
+    <x-form-input   name="height"  type="number"   label="Height"  :value="$product->height" />
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Length</label>
-      <input type="text" name="weight" class="form-control" id="exampleFormControlInput1"  value="{{$product->length}}" placeholder="Ex : 220cm">
-    </div>
+    <x-form-input   name="length"  type="number"   label="Length"  :value="$product->length" />
 
-    <div class="form-group">
-      <label for="exampleFormControlInput1">Sku</label>
-      <input type="text" name="sku" class="form-control" id="exampleFormControlInput1"  value="{{$product->sku}}" placeholder="sku : any unique code">
-    </div>
+    <x-form-input   name="wedth"   type="number"   label="Wedth"   :value="$product->wedth" />
+    
+    <x-form-input   name="sku"   type="text"      label="SKU"   :value="$product->sku" />
 
-    <div class="form-group">
-        <label for="image">Image</label>
-        <input type="file" name="image" class="form-control" id="image"  >
-    </div>
+    <x-form-input   name="image"   type="file"   label="Product Image"   :value="$product->image" />
+  
 
     <div class="form-check">
         <input class="form-check-input" type="radio" name="status" id="status" value="Active" @if ($product->status == "Active") checked @endif >
